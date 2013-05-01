@@ -1,10 +1,12 @@
-<!dochtml>
+<!doctype html>
 <html>
 <head>
 	<title>tot</title>
 </head>
 <body>
-	
+	<form action="login.php" method="POST">
+		<input type="submit" value="logout" />
+	</form>
 	<form action="#" method="POST">
 	<table width="672" border="0">
   		<tr>
@@ -37,13 +39,14 @@
 	</form>
 	<?php
 	require ('config.php');
+	session_start();
 	max_seq($objConnect);
 	if(isset($_POST['as_path'])&&isset($_POST['prefix']))
 	{
 		if(!empty($_POST['as_path'])&&!empty($_POST['prefix']))
 		{
 			add_data($_POST['as_path'],$_POST['prefix'],$objConnect);
-
+			echo "<script> window.location='view.php'; </script>";
 		}
 		else
 		{
@@ -59,9 +62,10 @@
 		for($i=0;$i<sizeof($prefix);$i++)
 		{	
 			$max_seq = max_seq($objConnect);
-			$sql = "INSERT INTO add_path (date_add,time_add,seq,prefix,as_path,status)";
-			$sql.= "VALUES ('$date_add','$time_add','$max_seq','$prefix[$i]','$as_path','Requested')";
-			mysql_query($sql,$objConnect);
+			$sql = "INSERT INTO add_path (date_add,time_add,seq,prefix,as_path,status,username)";
+			$sql.= "VALUES ('$date_add','$time_add','$max_seq','$prefix[$i]','$as_path','Requested','".$_SESSION['username']."')";
+			mysql_query($sql,$objConnect)or die("sql error");
+
 		}
 
 	}
