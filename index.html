@@ -1,0 +1,28 @@
+<!dochtml>
+<html>
+<head>
+	<title>tot</title>
+</head>
+<body>
+	<form action="#">
+		<p>AS Path: <input type="text" name="as_path"/></p>
+		<p>Prefix: <textarea name="prefix"></textarea></p>
+		<p><input type="submit" value="Add"/></p>
+	</form>
+	<?php
+	if(isset('as_path')&&isset('prefix'))
+	{
+		if(!empty('as_path')&&!empty('prefix'))
+		{
+			
+		}
+		else
+		{
+			echo "No data plase add"
+		}
+
+	}
+
+	?>
+</body>
+</html>
