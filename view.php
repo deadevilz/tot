@@ -21,7 +21,6 @@
 				echo "<form action='login.php' method='POST'>";			
 				echo "<input type='submit' value='logout' />";
 				echo "</form>";
-				session_start();
 				$_SESSION['username'] = $row['username'];
 				$_SESSION['type'] = $row['type'];
 				if($row['type']==1)
@@ -51,6 +50,33 @@
 					show_user($objConnect);
 				}
 		}
+		if(isset($_POST['seq']))
+		{
+			$status = $_POST['status']==='Requested' ? 'On Process' : 'Completed';
+			$sql = "UPDATE add_path SET status='$status' WHERE seq='".$_POST['seq']."'";
+			mysql_query($sql,$objConnect)or die('sql error');
+
+		}
+		if(isset($_POST['username']))
+		{
+			$sql = "SELECT date_add,time_add,seq,prefix,as_path,status FROM add_path";
+			$sql.= " WHERE username='".$_POST['username']."'";
+			$query = mysql_query($sql,$objConnect)or die("sql error");
+			echo "<table border='1'>";
+			echo "<td>Date</td><td>Time</td><td>seq</td><td>Prefix</td><td>AS Path</td><td>Status</td><td>Update Status</td>";
+			while ($row = mysql_fetch_assoc($query)) 
+			{
+				echo "<tr>";
+				foreach ($row as $cell) 
+					echo "<td>$cell</td>";
+				echo "<td><form action='#' method='POST'><input type='submit' value='Update Status'>";
+				echo "<input type='hidden' name='seq' value='".$row['seq']."'>";
+				echo "<input type='hidden' name='status' value='".$row['status']."'>";;
+				echo "<input type='hidden' name='username' value='".$_POST['username']."'></form></td>";
+				echo "</tr>";
+				//echo var_dump($row);
+			}
+		}
 
 		function show_admin($objConnect)
 		{
@@ -64,7 +90,7 @@
 					echo "<td>$cell</td>";
 				echo "<form action='#' method='POST'>";
 				echo "<td><input type='submit' value='view' /></td>";
-				echo "<input type='hidden' value='$cell' />";
+				echo "<input type='hidden' name='username' value='$cell' />";
 				echo "</form>";
 				echo "</tr>";
 			}
