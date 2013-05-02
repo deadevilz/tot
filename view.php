@@ -44,13 +44,7 @@
 				if($_SESSION['type']==1)
 				{
 					show_admin($objConnect);
-				}
-				else if($_SESSION['type']==2) 
-				{
-					show_user($objConnect);
-				}
-		}
-		if(isset($_POST['seq']))
+					if(isset($_POST['seq']))
 		{
 			$status = $_POST['status']==='Requested' ? 'On Process' : 'Completed';
 			$sql = "UPDATE add_path SET status='$status' WHERE seq='".$_POST['seq']."'";
@@ -77,6 +71,13 @@
 				//echo var_dump($row);
 			}
 		}
+				}
+				else if($_SESSION['type']==2) 
+				{
+					show_user($objConnect);
+				}
+		}
+		
 
 		function show_admin($objConnect)
 		{
